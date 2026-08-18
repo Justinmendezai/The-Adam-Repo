@@ -1,0 +1,116 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://adam.dev/schemas/slice-status.schema.json",
+  "title": "adam Slice Status Registry (machine-readable companion)",
+  "description": "Optional machine-readable mirror of agent-control/slice-status.md. The markdown registry stays the canonical, human-owned Tier-1 working memory; this JSON is a queryable companion that MUST agree with it row-for-row. Modeled on the ecc.session.v1 worker snapshot, in adam terms. The same 'one driver per registry' rule applies: only the Tier-1 orchestrator (orchestrate-build) writes it during a run.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "slices"],
+  "properties": {
+    "schema_version": {
+      "const": "adam.slice-status.v1",
+      "description": "Compatibility gate. Consumers MUST branch on this. Bump to v2 only on a breaking change (removed/renamed/retyped field)."
+    },
+    "generated_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "When this snapshot was last written by the orchestrator."
+    },
+    "run": {
+      "type": ["string", "null"],
+      "description": "Orchestration run id this snapshot belongs to, e.g. run-007. Null outside a bounded cycle."
+    },
+    "slices": {
+      "type": "array",
+      "description": "One entry per slice, in dependency order so a top-to-bottom read is a topological walk (mirrors the markdown row order).",
+      "items": { "$ref": "#/$defs/slice" }
+    },
+    "aggregates": {
+      "type": "object",
+      "description": "Derived counts for cheap status reads. statuses map MUST be consistent with slices[].status.",
+      "additionalProperties": false,
+      "properties": {
+        "slice_count": { "type": "integer", "minimum": 0 },
+        "statuses": {
+          "type": "object",
+          "description": "Count map keyed by status value.",
+          "additionalProperties": { "type": "integer", "minimum": 0 }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "nullableString": { "type": ["string", "null"] },
+    "stringArray": { "type": "array", "items": { "type": "string" } },
+    "slice": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "status"],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Slice id; matches slices/<id>/ and the markdown row."
+        },
+        "depends_on": {
+          "$ref": "#/$defs/stringArray",
+          "description": "Slice ids this slice waits on. Empty array = no unresolved edges (eligible for the next wave)."
+        },
+        "status": {
+          "type": "string",
+          "enum": ["ready", "dispatched", "done", "blocked", "human-gated", "escalate", "cancelled"],
+          "description": "Lifecycle state. Mirrors agent-control/slice-status.md exactly. `done` only after the orchestrator independently re-ran the verifier and it exited 0."
+        },
+        "health": {
+          "type": "string",
+          "enum": ["healthy", "degraded", "stalled", "unknown"],
+          "description": "Operational condition, distinct from lifecycle status. `stalled` = dispatched but no progress signal; `degraded` = progressing with warnings (e.g. verdict=warning)."
+        },
+        "branch": {
+          "$ref": "#/$defs/nullableString",
+          "description": "Branch the worker committed to (e.g. builder/<id>), or null before dispatch."
+        },
+        "worktree": {
+          "$ref": "#/$defs/nullableString",
+          "description": "Worktree path when the slice runs in best-of-n-runner isolation, else null."
+        },
+        "verify_exit": {
+          "type": ["integer", "null"],
+          "description": "Exit code from the orchestrator's independent re-run of the slice verifier. 0 is the only value that justifies status=done. Null before any re-run."
+        },
+        "verdict": {
+          "type": ["string", "null"],
+          "enum": ["approve", "warning", "block", null],
+          "description": "Latest review gate for the slice from its run-result (review-via-graph / e2e). Null before review. A `block` keeps the slice off `done`."
+        },
+        "operator_command": {
+          "$ref": "#/$defs/nullableString",
+          "description": "For status=human-gated: the exact command the operator must run before the verifier re-runs and the row can flip to done."
+        },
+        "outputs": {
+          "type": "object",
+          "additionalProperties": false,
+          "description": "Structured outcomes for this slice. Empty arrays when unknown.",
+          "properties": {
+            "summary": { "$ref": "#/$defs/stringArray", "description": "Completed outputs / what shipped." },
+            "validation": { "$ref": "#/$defs/stringArray", "description": "Validation evidence (verifier, tests, review notes, screenshots)." },
+            "remaining_risks": { "$ref": "#/$defs/stringArray", "description": "Open risks, follow-ups, or deferred debt." }
+          }
+        },
+        "run_result_ref": {
+          "$ref": "#/$defs/nullableString",
+          "description": "Path to the slice's structured run-result, e.g. scratch/run-results/<id>.json, for detail beyond this snapshot."
+        },
+        "notes": {
+          "$ref": "#/$defs/nullableString",
+          "description": "One-phrase note mirroring the markdown notes column. Link out for anything longer."
+        },
+        "updated_at": {
+          "type": "string",
+          "format": "date-time",
+          "description": "When this slice row was last changed."
+        }
+      }
+    }
+  }
+}

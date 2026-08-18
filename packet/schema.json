@@ -1,0 +1,246 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "adam Packet",
+  "description": "Validates the structured front matter and required sections of a PACKET.md",
+  "type": "object",
+  "required": [
+    "name",
+    "one_liner",
+    "goals",
+    "out_of_scope",
+    "success_criteria",
+    "constraints",
+    "tech_context"
+  ],
+  "properties": {
+    "name": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Short project identifier, kebab-case"
+    },
+    "one_liner": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Single sentence describing the project"
+    },
+    "owner": {
+      "type": "string",
+      "description": "Person responsible for the packet"
+    },
+    "deadline": {
+      "type": "string",
+      "description": "Free-form deadline string"
+    },
+    "goals": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "type": "string" }
+    },
+    "out_of_scope": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "success_criteria": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["id", "description"],
+        "properties": {
+          "id": { "type": "string" },
+          "description": { "type": "string" },
+          "measurable": { "type": "boolean" }
+        }
+      }
+    },
+    "constraints": {
+      "type": "object",
+      "properties": {
+        "stack": { "type": "array", "items": { "type": "string" } },
+        "deployment": { "type": "string" },
+        "performance": { "type": "string" },
+        "deadline": { "type": "string" }
+      }
+    },
+    "tech_context": {
+      "type": "object",
+      "required": ["repo_path"],
+      "properties": {
+        "repo_path": { "type": "string" },
+        "primary_language": { "type": "string" },
+        "key_libs": { "type": "array", "items": { "type": "string" } },
+        "conventions_doc": { "type": "string" }
+      }
+    },
+    "open_questions": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "orchestration": {
+      "type": "object",
+      "description": "Autonomy toggles for the adam loop. Defaults favor set-and-forget; opt in to mid-run gates.",
+      "properties": {
+        "require_plan_approval": {
+          "type": "boolean",
+          "description": "If true, research-and-plan waits for operator go/no-go before slice-to-tasks. Default false."
+        },
+        "require_intake_grilling": {
+          "type": "boolean",
+          "description": "If false, skip intake grilling (hotfix only). Default true — required upfront session with operator."
+        }
+      }
+    },
+    "refs": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["path"],
+        "properties": {
+          "path": { "type": "string" },
+          "note": { "type": "string" }
+        }
+      }
+    },
+    "e2e": {
+      "type": "object",
+      "description": "Committed Playwright E2E + orchestrator acceptance; drives tests-first / e2e-acceptance / review-runtime",
+      "properties": {
+        "spec_dir": {
+          "type": "string",
+          "description": "Directory for Playwright specs, e.g. e2e/"
+        },
+        "commands": {
+          "type": "object",
+          "properties": {
+            "dev": {
+              "type": "string",
+              "description": "Start app for local E2E, e.g. pnpm dev"
+            },
+            "test": {
+              "type": "string",
+              "description": "Run full Playwright suite, e.g. pnpm exec playwright test"
+            }
+          }
+        },
+        "base_url_env": {
+          "type": "string",
+          "description": "Env var for base URL, e.g. PLAYWRIGHT_BASE_URL"
+        },
+        "default_base_url": {
+          "type": "string",
+          "description": "Fallback base URL when env is unset, e.g. http://127.0.0.1:3000"
+        },
+        "journeys": {
+          "type": "array",
+          "description": "Maps success criteria to specs and MCP walk hints",
+          "items": {
+            "type": "object",
+            "required": ["success_criterion_id"],
+            "properties": {
+              "success_criterion_id": {
+                "type": "string",
+                "description": "Matches success_criteria[].id, e.g. SC-1"
+              },
+              "summary": {
+                "type": "string",
+                "description": "One-line journey description for reports"
+              },
+              "spec_paths": {
+                "type": "array",
+                "items": { "type": "string" },
+                "description": "Repo-relative Playwright files or globs"
+              },
+              "operator_only": {
+                "type": "boolean",
+                "description": "If true, do not auto-pass via agents; list under Outstanding manual checks"
+              }
+            }
+          }
+        }
+      }
+    },
+    "security": {
+      "type": "object",
+      "description": "Security program metadata for audits, acceptance gate, and planning agents. Automated checks live in verification.layers security ids.",
+      "properties": {
+        "threat_model_ref": {
+          "type": "string",
+          "description": "Repo-relative threat model or ADR"
+        },
+        "audit_ref": {
+          "type": "string",
+          "description": "Latest security-audit JSON, e.g. scratch/security-audit/audit-20260519.json"
+        },
+        "in_scope_services": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Ecosystem repo ids when this packet spans multiple services"
+        },
+        "acceptance_required": {
+          "type": "boolean",
+          "description": "If true, security-acceptance must pass before ship"
+        },
+        "block_ship_on": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": ["critical", "high", "medium"]
+          },
+          "description": "Open audit severities that fail security-acceptance (default critical + high)"
+        }
+      }
+    },
+    "verification": {
+      "type": "object",
+      "description": "Optional multi-layer verification: UI (Playwright) vs API, integration stack, contracts, agentic QA, security tooling. Playwright MCP covers browser depth; FastAPI/services use pytest/API/scenario tests — not Playwright.",
+      "properties": {
+        "layers": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["id"],
+            "properties": {
+              "id": {
+                "type": "string",
+                "enum": [
+                  "ui_e2e",
+                  "api_e2e",
+                  "integration",
+                  "contract",
+                  "agentic_qa",
+                  "dependency_audit",
+                  "sast",
+                  "secret_scan",
+                  "authz_review",
+                  "security_headers"
+                ],
+                "description": "ui_e2e: browser; api_e2e: pytest+httpx/TestClient; integration: docker/local stack; contract: OpenAPI/Pydantic; agentic_qa: orchestrator-led QA; dependency_audit: npm audit/pip-audit; sast: bandit/semgrep; secret_scan: gitleaks; authz_review: route/auth matrix + regression tests; security_headers: CSP/HSTS checks"
+              },
+              "summary": {
+                "type": "string",
+                "description": "What this layer proves"
+              },
+              "test_command": {
+                "type": "string",
+                "description": "Shell command for e2e-acceptance to run from repo root (omit for agentic-only layers)"
+              },
+              "tools": {
+                "type": "array",
+                "items": { "type": "string" },
+                "description": "e.g. pytest, httpx, docker compose, ruff, mypy"
+              },
+              "operator_only": {
+                "type": "boolean",
+                "description": "If true, do not auto-pass; list under Outstanding manual checks"
+              },
+              "docs_or_prompt_ref": {
+                "type": "string",
+                "description": "Repo-relative path to QA prompt, scenario list, or runbook"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

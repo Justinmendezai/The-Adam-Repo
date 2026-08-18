@@ -1,0 +1,132 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://adam.dev/schemas/security-audit.schema.json",
+  "title": "adam Security Audit",
+  "description": "Structured output from security-audit skill — ecosystem or single-repo. Feed to planning agents for refactor slices and security tests.",
+  "type": "object",
+  "required": ["audit_id", "timestamp", "scope", "repos", "summary", "findings"],
+  "properties": {
+    "audit_id": {
+      "type": "string",
+      "description": "e.g. my-app-audit-2026-06-25"
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "scope": {
+      "type": "string",
+      "enum": ["ecosystem", "single_repo"]
+    },
+    "repos": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "path"],
+        "properties": {
+          "id": { "type": "string" },
+          "path": { "type": "string" },
+          "stack": { "type": "string" },
+          "auth_summary": { "type": "string" },
+          "has_ci_security": { "type": "boolean" }
+        }
+      }
+    },
+    "summary": {
+      "type": "object",
+      "required": ["critical", "high", "medium", "low", "info"],
+      "properties": {
+        "critical": { "type": "integer" },
+        "high": { "type": "integer" },
+        "medium": { "type": "integer" },
+        "low": { "type": "integer" },
+        "info": { "type": "integer" },
+        "executive": { "type": "string" }
+      }
+    },
+    "cross_cutting_themes": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "planning_priorities": {
+      "type": "array",
+      "description": "Ordered P0/P1/P2 items for refactor agents",
+      "items": {
+        "type": "object",
+        "required": ["priority", "title", "repos"],
+        "properties": {
+          "priority": { "type": "string", "enum": ["P0", "P1", "P2", "P3"] },
+          "title": { "type": "string" },
+          "repos": { "type": "array", "items": { "type": "string" } },
+          "suggested_slices": { "type": "array", "items": { "type": "string" } },
+          "suggested_tests": { "type": "array", "items": { "type": "string" } }
+        }
+      }
+    },
+    "findings": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "severity", "title", "repo"],
+        "properties": {
+          "id": { "type": "string", "description": "e.g. WEB-APP-001" },
+          "severity": {
+            "type": "string",
+            "enum": ["critical", "high", "medium", "low", "info"]
+          },
+          "title": { "type": "string" },
+          "description": { "type": "string" },
+          "repo": { "type": "string" },
+          "location": { "type": "string", "description": "file:line or route" },
+          "category": {
+            "type": "string",
+            "enum": [
+              "authz",
+              "authn",
+              "secrets",
+              "injection",
+              "supply_chain",
+              "data_exposure",
+              "webhook",
+              "rate_limit",
+              "headers",
+              "infra",
+              "multi_tenant",
+              "other"
+            ]
+          },
+          "cwe": { "type": "string" },
+          "remediation_hint": { "type": "string" },
+          "test_hint": { "type": "string", "description": "Suggested regression test type" },
+          "status": {
+            "type": "string",
+            "enum": ["open", "accepted_risk", "fixed", "false_positive"]
+          }
+        }
+      }
+    },
+    "dependency_audit": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "repo": { "type": "string" },
+          "tool": { "type": "string" },
+          "command": { "type": "string" },
+          "status": { "type": "string", "enum": ["passed", "failed", "skipped", "not_run"] },
+          "notes": { "type": "string" }
+        }
+      }
+    },
+    "refs": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "path": { "type": "string" },
+          "note": { "type": "string" }
+        }
+      }
+    }
+  }
+}

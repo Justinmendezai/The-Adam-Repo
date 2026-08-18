@@ -1,0 +1,188 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://adam.dev/schemas/run-result.schema.json",
+  "title": "adam Run Result",
+  "description": "Structured result emitted by every dispatch, every review, and the e2e-acceptance pass. Lives at scratch/run-results/<id>.json.",
+  "type": "object",
+  "required": ["kind", "id", "timestamp", "status", "summary"],
+  "properties": {
+    "kind": {
+      "type": "string",
+      "enum": ["dispatch", "manage", "review", "e2e", "intake", "research"],
+      "description": "Which phase produced this result. `manage` is emitted by the Tier-2 dispatch-manager subagent in the 3-tier topology."
+    },
+    "id": {
+      "type": "string",
+      "description": "Slice id, project name, or other identifier this result is keyed by"
+    },
+    "issue_url": {
+      "type": "string",
+      "format": "uri",
+      "description": "For tracker-backed slices (GitHub issues, Linear tickets, etc.): URL of the originating issue. Lets reviewers jump from a run-result back to the source spec without inferring from `id`."
+    },
+    "pr_url": {
+      "type": "string",
+      "format": "uri",
+      "description": "For slices that ship via a pull request opened by `pr-from-slice`: URL of the PR. Lets reviewers jump from a run-result straight to the merged (or in-flight) PR. Distinct from `issue_url` so both can coexist."
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "status": {
+      "type": "string",
+      "enum": ["success", "fail", "partial", "blocked", "escalate", "code-complete", "human-gated"],
+      "description": "`code-complete` = worker did all it could; an `operator_command` follows (matches `human_gated: true` in the slice SPEC). `human-gated` = the orchestrator has paused this branch awaiting the operator action."
+    },
+    "verdict": {
+      "type": "string",
+      "enum": ["approve", "warning", "block"],
+      "description": "For `kind: review` and `kind: e2e`: the machine-readable review gate derived from `review_findings` that survived the reviewer contract. `approve` = no critical/warning findings (a clean zero-finding review is valid); `warning` = warning findings only; `block` = one or more critical findings. The Tier-1 orchestrator reads this to decide whether a slice advances; a `block` keeps the slice off `done` in agent-control/slice-status.md."
+    },
+    "summary": {
+      "type": "string",
+      "description": "Human-readable one-paragraph summary"
+    },
+    "branch": {
+      "type": "string",
+      "description": "For dispatch results: the branch the subagent committed to"
+    },
+    "commits": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["sha"],
+        "properties": {
+          "sha": { "type": "string" },
+          "message": { "type": "string" }
+        }
+      }
+    },
+    "subagent": {
+      "type": "object",
+      "description": "For dispatch/manage results: which subagent ran",
+      "properties": {
+        "type": { "type": "string", "enum": ["best-of-n-runner", "generalPurpose", "explore", "shell", "manage"] },
+        "model": { "type": "string" },
+        "completion_signal": { "type": "string" }
+      }
+    },
+    "verifier": {
+      "type": "object",
+      "description": "Result of running `slices/<id>/verify.sh` (or the inline `verify:` one-liner). Required on `kind: dispatch` and `kind: manage`. The Tier-1 orchestrator independently re-runs this before flipping a slice-status row to `done`.",
+      "required": ["command", "exit_code"],
+      "properties": {
+        "command": { "type": "string" },
+        "exit_code": { "type": "integer" },
+        "stderr_tail": { "type": "string", "description": "Last ~400 chars of stderr, or empty" }
+      }
+    },
+    "manager_verify": {
+      "type": "object",
+      "description": "For `kind: dispatch` results: the Tier-2 manager's smoke run of the verifier. Distinct from the Tier-1 orchestrator's independent re-run.",
+      "properties": {
+        "command": { "type": "string" },
+        "exit_code": { "type": "integer" },
+        "stderr_tail": { "type": "string" }
+      }
+    },
+    "operator_command": {
+      "type": "string",
+      "description": "For `status: code-complete` or `status: human-gated`: the exact shell command (or step) a human must run before this slice can flip to `done`."
+    },
+    "tests": {
+      "type": "object",
+      "properties": {
+        "command": { "type": "string" },
+        "passed": { "type": "integer" },
+        "failed": { "type": "integer" },
+        "skipped": { "type": "integer" }
+      }
+    },
+    "e2e_command": {
+      "type": "string",
+      "description": "For e2e kind: exact Playwright (or wrapper) command that was run"
+    },
+    "playwright_report_path": {
+      "type": "string",
+      "description": "For e2e kind: path to HTML report or test-results dir if generated"
+    },
+    "verification_layers": {
+      "type": "array",
+      "description": "For e2e kind: per-layer outcome from packet verification.layers (step 2c)",
+      "items": {
+        "type": "object",
+        "required": ["id", "status"],
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "ui_e2e | api_e2e | integration | contract | agentic_qa | dependency_audit | sast | secret_scan | authz_review | security_headers"
+          },
+          "command": { "type": "string" },
+          "status": {
+            "type": "string",
+            "enum": ["passed", "failed", "skipped", "manual"]
+          },
+          "notes": { "type": "string" }
+        }
+      }
+    },
+    "files_changed": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "files_created": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "out_of_scope_violations": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Files modified that were listed under paths_out_of_scope"
+    },
+    "security_audit_path": {
+      "type": "string",
+      "description": "For security-audit / security-acceptance: path to audit JSON baseline"
+    },
+    "security_findings": {
+      "type": "array",
+      "description": "For security-acceptance: open or closed findings reconciled against audit",
+      "items": {
+        "type": "object",
+        "required": ["id", "severity", "status"],
+        "properties": {
+          "id": { "type": "string" },
+          "severity": { "type": "string", "enum": ["critical", "high", "medium", "low", "info"] },
+          "status": { "type": "string", "enum": ["open", "fixed", "accepted_risk", "false_positive"] },
+          "summary": { "type": "string" },
+          "location": { "type": "string" }
+        }
+      }
+    },
+    "review_findings": {
+      "type": "array",
+      "description": "For review results: per-finding entries",
+      "items": {
+        "type": "object",
+        "required": ["severity", "summary"],
+        "properties": {
+          "severity": { "type": "string", "enum": ["critical", "warning", "info"] },
+          "source": { "type": "string", "description": "code-review-graph | log-reader-mcp | chrome-devtools | playwright | cursor-ide-browser | security-audit | bandit | semgrep | gitleaks | manual" },
+          "summary": { "type": "string" },
+          "location": { "type": "string", "description": "file:line or URL" }
+        }
+      }
+    },
+    "duration_ms": {
+      "type": "integer"
+    },
+    "errors": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "notes": {
+      "type": "array",
+      "items": { "type": "string" }
+    }
+  }
+}

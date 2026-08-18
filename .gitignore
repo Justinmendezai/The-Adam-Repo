@@ -1,0 +1,11 @@
+scratch/
+.DS_Store
+*.log
+.env
+.env.*
+!.env.example
+node_modules/
+*.pem
+*.key
+credentials.json
+secrets.json

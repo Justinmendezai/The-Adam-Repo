@@ -1,0 +1,26 @@
+{
+  "_comment": "Recommended global MCP setup for adam. Place at ~/.cursor/mcp.json. Project-local .cursor/mcp.json files can extend or override.",
+  "mcpServers": {
+    "code-review-graph": {
+      "_comment": "Structural review across branches. Used by review-via-graph skill. Install via: pipx install code-review-graph",
+      "command": "/Users/<you>/.local/bin/code-review-graph",
+      "args": ["serve"],
+      "type": "stdio"
+    },
+    "log-reader-mcp": {
+      "_comment": "Read app logs. Used by review-runtime skill.",
+      "command": "npx",
+      "args": ["-y", "log-reader-mcp"]
+    },
+    "chrome-devtools": {
+      "_comment": "Drive Chrome devtools for runtime/perf review. Used by review-runtime + e2e-acceptance.",
+      "command": "npx",
+      "args": ["-y", "chrome-devtools-mcp@latest"]
+    },
+    "playwright": {
+      "_comment": "Optional browser automation alternative.",
+      "command": "npx",
+      "args": ["-y", "@playwright/mcp@latest", "--vision"]
+    }
+  }
+}

@@ -1,5 +1,9 @@
 # The Adam Repo
 
+> “Whoever gathered much had nothing left over, and whoever gathered little had no lack.”
+>
+> — *Exodus 16:18*
+
 Bolt this onto the coding agent you already like, and you have a software factory.
 
 You stay in the CEO seat. Adam acts as your CTO. You need to understand the problem well enough to know when the solution is right. That is your job. Adam helps with the rest.

@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="docs/brand/adam-mark.png" alt="Adam" width="160" />
+</p>
+
 # The Adam Repo
 
 Bolt this onto the coding agent you already like, and you have a software factory.

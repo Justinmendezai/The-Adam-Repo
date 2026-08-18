@@ -1,9 +1,5 @@
 # The Adam Repo
 
-> “Whoever gathered much had nothing left over, and whoever gathered little had no lack.”
->
-> — *Exodus 16:18*
-
 Bolt this onto the coding agent you already like, and you have a software factory.
 
 You stay in the CEO seat. Adam acts as your CTO. You need to understand the problem well enough to know when the solution is right. That is your job. Adam helps with the rest.
@@ -11,6 +7,10 @@ You stay in the CEO seat. Adam acts as your CTO. You need to understand the prob
 Cursor is the path we write down first. If your agent can load skills and project rules, you can run the same factory.
 
 Why we built it: [justinmendez.ai/the-adam-repo](https://justinmendez.ai/the-adam-repo)
+
+> “Whoever gathered much had nothing left over, and whoever gathered little had no lack.”
+>
+> — *Exodus 16:18*
 
 ---
 

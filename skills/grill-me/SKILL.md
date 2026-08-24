@@ -7,6 +7,14 @@ description: Get relentlessly interviewed about a plan, design, or decision unti
 
 Adapted from [Matt Pocock's grill-me](https://github.com/mattpocock/skills). The agent stops being agreeable and starts asking sharp questions until the plan stops branching.
 
+## Preamble (once, before the first question)
+
+People are surprised by how many questions this takes. Say why, then ask. Two sentences max. Do not skip.
+
+> I'm going to ask a handful of questions so we get this right the first time. Better a short interview now than rebuilding the wrong thing.
+
+Then one question. Do not list the remaining questions.
+
 ## How to grill
 
 1. **One question at a time.** No batches.

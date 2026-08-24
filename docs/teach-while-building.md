@@ -10,14 +10,10 @@ Lightweight, **opt-in** micro-lessons during Adam builds — inspired by “teac
 |-----------|----------|
 | `adam/context/preferences.md` → **Teach me** | Show teach hooks at slice boundaries |
 | **Pair with me** | Hooks at slice boundaries only (no extra jargon nudges) |
-| **Just build it** | No hooks; `/what?` still available |
+| **Just build it** | No hooks; if they are confused, explain in this chat |
 | User skipped opt-in at first build | Same as Just build it for hooks |
 
-After **`calibrate`**, ask once:
-
-> “Want a ~60-second concept before each major step?”
-
-Answers: **Yes** · **Skip forever** · **Remind later** (re-ask at next `/grill-me`).
+After **`calibrate`**, Teach me records teach-while-building as **yes** by default. One sentence in chat is enough; do not assign this doc as reading.
 
 ---
 
@@ -50,6 +46,6 @@ Each module includes a default **Teach hook** section for copy-paste into SPECs.
 | **Teach hook** | Proactive, slice boundary | “You’re about to…” context |
 | **`/what?`** | User-invoked | Break down any term, pro/con, OSS examples |
 
-Do not auto-invoke `/what?` — skill stays explicit (`disable-model-invocation: true`).
+Do not send them to `/what?`. If they are confused, explain in the same chat ([`what`](../skills/what/SKILL.md)).
 
 See [`notebooklm-adam-source.md`](notebooklm-adam-source.md) § Fundamentals series for atomization prompts.

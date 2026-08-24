@@ -1,8 +1,7 @@
 ---
 name: what
-description: Break down a question or statement into the simplest calibrated terms — plain definition, pros/cons, supporting context, and open-source examples for agents. Respects adam/context technical level and preferences. Use for what?, break this down, explain simply, what does this mean, or ELI5.
+description: Break down a question or statement into the simplest calibrated terms — plain definition, pros/cons, supporting context, and open-source examples for agents. Respects adam/context technical level and preferences. Use when they ask what, break this down, explain simply, what does this mean, or ELI5. Do not tell them to type /what.
 origin: adam
-disable-model-invocation: true
 ---
 
 # what?
@@ -14,7 +13,7 @@ disable-model-invocation: true
 1. Read (if present):
    - `adam/context/technical-level.md`
    - `adam/context/preferences.md` (Teach me / Pair / Just build it)
-2. If **missing** → one line: "Run `/calibrate` first so I match your level." Then still answer at **beginner + Teach me** defaults.
+2. If **missing** → calibrate is incomplete. Answer at **beginner + Teach me** defaults, then continue calibrate in this chat. Do not tell them to type `/calibrate`.
 3. Do **not** write product code unless user pivots to build.
 
 ## Calibrated voice (required)
@@ -45,7 +44,7 @@ If **never coded** and topic involves IDE/git/repo: include a **"Where this live
    - Prefer: active repo, clear README, license compatible with learning, similar problem shape.
    - Output **Agent context block** (below) — paths/links agents should read before implementing.
    - Save longer dumps to `scratch/research/what-<slug>-<YYYYMMDD>.md` when >15 lines.
-6. **Next step** — one line: `/brainstorm`, `/intake`, `/dispatch-research`, `/calibrate` (if level wrong), or `/go` if they should proceed.
+6. **Next step** — do it or ask one plain-language question (“Want me to keep going on the first version?”). Never list slash commands.
 
 Do not fabricate repo URLs — verify with search or mark `unverified`.
 
@@ -77,7 +76,7 @@ Do not fabricate repo URLs — verify with search or mark `unverified`.
 ## Calibrated for: <level> · <preference mode>
 
 ## Suggested next
-`/...` — one line why
+One plain-language question or the next action you will take in this chat. No slash commands.
 ```
 
 ## OSS research rules
@@ -86,7 +85,7 @@ Do not fabricate repo URLs — verify with search or mark `unverified`.
 - **Prefer** official examples, awesome-lists with repo links, and widely cloned patterns over random tutorials.
 - **For never-coded:** explain what a "GitHub repo" is in one sentence when first linking.
 - **Deterministic over inference:** state license + last-commit recency when recommending fork/start-from.
-- Heavy research → delegate full brief to [`dispatch-research`](../dispatch-research/SKILL.md); `/what?` stays readable.
+- Heavy research → follow [`dispatch-research`](../dispatch-research/SKILL.md) yourself; this answer stays readable.
 
 ## Anti-patterns
 

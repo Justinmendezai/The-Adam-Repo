@@ -58,7 +58,7 @@ Each role is a focused pass. Don't try to do all of them at once.
 
 ## Label vocabulary
 
-Use the project's labels from `.cursor/adam.json` (or equivalent). If absent, ask the user once and store them.
+Use the project's labels from `adam.json` (or equivalent). If absent, ask the user once and store them.
 
 ## Workflow
 

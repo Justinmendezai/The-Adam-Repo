@@ -1,6 +1,6 @@
 ---
 name: dispatch-manager
-description: Tier-2 per-slice manager. Reads exactly one slices/<id>/SPEC.md, constructs a tightly-scoped worker prompt (reproducing the verifier verbatim), dispatches the worker subagent, runs the verifier once, and returns a single-line summary to the Tier-1 orchestrator. Owns sub-task fan-out for oversized slices. Use when topology_depth=3 in .cursor/adam.json and orchestrate-build hands you a slice id.
+description: Tier-2 per-slice manager. Reads exactly one slices/<id>/SPEC.md, constructs a tightly-scoped worker prompt (reproducing the verifier verbatim), dispatches the worker subagent, runs the verifier once, and returns a single-line summary to the Tier-1 orchestrator. Owns sub-task fan-out for oversized slices. Use when topology_depth=3 in adam.json and orchestrate-build hands you a slice id.
 ---
 
 # dispatch-manager
@@ -15,7 +15,7 @@ This skill is invoked by [`orchestrate-build`](../orchestrate-build/SKILL.md). I
 - `slices/<id>/verify.sh` (or the inline `verify` one-liner from the SPEC frontmatter).
 - `plan/CONTEXT.md` (one screen).
 - `packet/PACKET.md` `success_criteria` block only.
-- `.cursor/adam.json` (runtime defaults).
+- `adam.json` (runtime defaults).
 
 **Never** in context:
 - Any other slice's spec.
@@ -31,7 +31,7 @@ spec_path:              slices/<id>/SPEC.md
 verifier_path:          slices/<id>/verify.sh
 context_path:           plan/CONTEXT.md
 packet_path:            packet/PACKET.md
-config_path:            .cursor/adam.json
+config_path:            adam.json
 paths_out_of_scope:     <list of every other slice dir + packet/, plan/, agent-control/, orchestration-runs/, slices/<id>/SPEC.md, slices/<id>/tests/>
 ```
 
@@ -191,7 +191,7 @@ If `human_gated: true` (terminal `integration-live` only) or the worker emits `<
 
 ## When to skip this skill (2-tier fallback)
 
-If `.cursor/adam.json` has `topology_depth: 2`, the orchestrator dispatches workers directly via [`dispatch-builder`](../dispatch-builder/SKILL.md) / [`dispatch-parallel`](../dispatch-parallel/SKILL.md). The manager hop adds context isolation; in small builds (≤5 slices, tiny SPECs) it's pure overhead. Probe both depths on the first wave and lock the choice in `.cursor/adam.json` for the rest of the build.
+If `adam.json` has `topology_depth: 2`, the orchestrator dispatches workers directly via [`dispatch-builder`](../dispatch-builder/SKILL.md) / [`dispatch-parallel`](../dispatch-parallel/SKILL.md). The manager hop adds context isolation; in small builds (≤5 slices, tiny SPECs) it's pure overhead. Probe both depths on the first wave and lock the choice in `adam.json` for the rest of the build.
 
 ## Output
 

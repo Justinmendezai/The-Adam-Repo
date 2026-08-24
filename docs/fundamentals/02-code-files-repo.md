@@ -23,7 +23,7 @@ A **repo** (repository) is that folder **tracked over time** so you can see what
 |-------|----------------|
 | **Cursor** | The app where you chat with the agent and open files |
 | **Project folder / repo** | The directory on disk that *is* your product |
-| **`~/adam`** | Adam’s skills — separate from your product |
+| **`~/adam`** | The harness clone (The-Adam-Repo) — separate from your product |
 | **Agent** | Reads/writes files in your product repo when you approve |
 
 When Adam “builds a login page,” it usually **creates or edits files** like `app/login/page.tsx` — not a mystical “login feature” floating in chat.
@@ -63,4 +63,4 @@ After a slice lands, open the file tree and **click the file the agent named**. 
 
 ## CTA
 
-Next: [Git: save points and branches](03-git-save-points.md) · Run **`/setup-adam`** when your product repo is ready.
+Next: [Git: save points and branches](03-git-save-points.md). Adam sets up the product folder during first chat — you should not type a command for that.

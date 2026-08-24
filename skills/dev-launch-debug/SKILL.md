@@ -66,7 +66,7 @@ Await(
 )
 ```
 
-If `Await` times out, read the terminal output, fix (env, port, deps), and retry. Do not paste the command for the operator unless `operator_runs_commands: true` in `.cursor/adam.json`.
+If `Await` times out, read the terminal output, fix (env, port, deps), and retry. Do not paste the command for the operator unless `operator_runs_commands: true` in `adam.json`.
 
 Keep the server running for the whole session. Reuse the same shell; restart only after a fix that requires it.
 
@@ -74,7 +74,7 @@ Keep the server running for the whole session. Reuse the same shell; restart onl
 
 Resolve the browser MCP the same way [`review-runtime`](../review-runtime/SKILL.md) and [`e2e-acceptance`](../e2e-acceptance/SKILL.md) do:
 
-1. Read `.cursor/adam.json`. Honor `browser_mcp` if set.
+1. Read `adam.json`. Honor `browser_mcp` if set.
 2. Else prefer a `playwright` server (or any id containing `playwright`).
 3. Else fall back to `cursor-ide-browser`.
 

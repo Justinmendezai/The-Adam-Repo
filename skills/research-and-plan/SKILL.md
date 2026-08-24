@@ -80,7 +80,7 @@ What now becomes easier. What now becomes harder.
 ### 5. Proceed to slicing (default: auto)
 
 - **Default:** ADRs ship as `Status: accepted`. Proceed directly to [`slice-to-tasks`](../slice-to-tasks/SKILL.md) without operator go/no-go.
-- **Opt-in gate:** when `packet.orchestration.require_plan_approval: true` or `.cursor/adam.json` has `"require_plan_approval": true`, show `plan.md` headings + ADR titles and wait for go/no-go before slicing.
+- **Opt-in gate:** when `packet.orchestration.require_plan_approval: true` or `adam.json` has `"require_plan_approval": true`, show `plan.md` headings + ADR titles and wait for go/no-go before slicing.
 
 Write a one-line plan summary to `scratch/last-run.md`. The operator reviews architecture at **final handoff** ([`e2e-acceptance`](../e2e-acceptance/SKILL.md) + `scratch/taste-review.md`), not mid-run.
 

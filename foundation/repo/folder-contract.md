@@ -59,9 +59,19 @@ project-root/
 │       ├── test-results.md
 │       └── open-issues.md     # delta
 ├── src/                      # PROJECT CODE — subagents write within slice scope
-└── .cursor/
-    ├── adam.json       # project config (subagent defaults, MCP list, signals)
-    └── rules/                # synced from ~/adam/foundation/cursor/rules.md
+├── adam.json                 # CANONICAL project config (mirrored into host dirs)
+├── AGENTS.md                 # Codex / generic agent index (Adam section appended)
+├── CLAUDE.md                 # Claude Code entry
+├── docs/
+│   ├── adam-rules.md         # synced house rules (host-neutral)
+│   └── adam-folder-contract.md
+├── .cursor/
+│   ├── adam.json             # Cursor mirror of adam.json
+│   └── rules/adam.md         # Cursor auto-load of the same rules
+├── .agents/
+│   └── adam.json             # Codex mirror
+└── .claude/
+    └── adam.json             # Claude Code mirror
 ```
 
 ## Permissions
@@ -77,9 +87,9 @@ project-root/
 | `orchestration-runs/` | read/write | read |
 | `scratch/` | read/write | read/write (their slice's subdir) |
 | `src/` | read | read/write (within slice scope) |
-| `.cursor/` | read | read |
+| `adam.json` / host mirrors | read | read |
 
-## Hard rules (mirrors `foundation/cursor/rules.md`)
+## Hard rules (mirrors `foundation/rules.md`)
 
 - Never modify files under `packet/`.
 - Never modify `slices/<id>/SPEC.md`, `slices/<id>/verify.sh`, or `slices/<id>/tests/` from a subagent.

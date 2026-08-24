@@ -6,7 +6,7 @@
 
 ## Working style
 
-- Primary IDE: Cursor
+- Primary IDE: <!-- cursor | codex | claude — agent fills from host detection, do not ask -->
 - Session length preference:
 
 ## Notes

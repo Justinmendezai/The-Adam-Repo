@@ -20,22 +20,19 @@ Why we built it: [justinmendez.ai/the-adam-repo](https://justinmendez.ai/the-ada
 
 ## Quick start
 
-You need Git and a coding agent. We document [Cursor](https://cursor.com) first.
+Paste this URL into your coding agent:
 
-```bash
-git clone https://github.com/Justinmendezai/The-Adam-Repo.git ~/adam
-mkdir -p ~/.cursor/skills
-for s in ~/adam/skills/*/; do
-  ln -sf "$s" ~/.cursor/skills/"$(basename "$s")"
-done
-```
+https://github.com/Justinmendezai/The-Adam-Repo
 
-1. Open **your product folder** in Cursor (the thing you want to build — not this repo, unless you are hacking on Adam itself).
-2. Run **`calibrate`**. Adam interviews you once.
-3. Run **`setup-adam`** in that folder. That creates the project files Adam needs.
-4. Tell Adam what you are building. If a decision is unclear, ask **`/what`**.
+Say **Install Adam and help me start.** Stay in the chat. Approve permission prompts.
 
-Step-by-step: [`docs/bootstrap.md`](docs/bootstrap.md). Never coded? Pick *Teach me* during calibrate and skim [`docs/fundamentals/`](docs/fundamentals/).
+That is the whole install. Adam interviews you, installs skills, and sets up the project. You do not clone, symlink, or type slash commands.
+
+Accounts only you can create (GitHub first; Vercel / Neon when needed): [`docs/accounts.md`](docs/accounts.md).
+
+Cursor, Codex, and Claude Code all work. Cursor is the path we write down first.
+
+Agent bootstrap (not homework): [`docs/bootstrap.md`](docs/bootstrap.md).
 
 ```mermaid
 flowchart TD
@@ -82,16 +79,16 @@ Templates: [`adam/context/`](adam/context/). After `setup-adam`, project memory 
 
 ## Skills
 
-Point your coding agent at `skills/`. On Cursor, that’s the symlink loop above.
+Skills live in `skills/<name>/SKILL.md`. Opening this repo discovers them. Copy **folders**, never flatten `SKILL.md` files (that makes every skill look like `skill.md`).
 
 ### Start
 
 | Skill | What it does |
 |-------|----------------|
-| [`calibrate`](skills/calibrate/SKILL.md) | Interviews you once and writes context files |
+| [`calibrate`](skills/calibrate/SKILL.md) | Interviews you once, installs skills, sets up the project, drafts the packet |
 | [`setup-adam`](skills/setup-adam/SKILL.md) | Creates `packet/`, `plan/`, `slices/`, and `agent-control/` in your product repo |
 | [`adam-foundation-sync`](skills/adam-foundation-sync/SKILL.md) | Copies rules and the folder layout into a project |
-| [`what`](skills/what/SKILL.md) | Explains a decision in plain language, with tradeoffs — invoke as **`/what`** |
+| [`what`](skills/what/SKILL.md) | Explains a decision in plain language, with tradeoffs |
 
 ### Figure it out
 
@@ -152,31 +149,20 @@ Point your coding agent at `skills/`. On Cursor, that’s the symlink loop above
 | [`steward`](skills/steward/SKILL.md) | Same job as session-steward, operator name |
 | [`repo-truth`](skills/repo-truth/SKILL.md) | Git vs docs — what actually landed |
 | [`merge-manual`](skills/merge-manual/SKILL.md) | Merges approved branches and gives you a QA list |
-| [`ship`](skills/ship/SKILL.md) | Commit and push with safe defaults — **`/ship`** |
-| [`go`](skills/go/SKILL.md) | Proceed without re-pitching — **`/go`** |
+| [`ship`](skills/ship/SKILL.md) | Commit and push with safe defaults |
+| [`go`](skills/go/SKILL.md) | Proceed without re-pitching |
 | [`canvas-project`](skills/canvas-project/SKILL.md) | Visual project status |
 | [`triage`](skills/triage/SKILL.md) | Moves issues from inbox to ready |
 
-### Commands
+### Optional Cursor shortcuts
 
-These are skills you invoke on purpose (slash or by name):
+Same skills run from plain speech. Slash names are Cursor-only — never the Codex / ChatGPT interface.
 
-| Command | Skill |
-|---------|--------|
-| `/what` | Calibrated explanation + tradeoffs |
-| `/go` | Proceed |
-| `/ship` | Commit + push |
-| `/brainstorm` | Strategy, no code |
-| `/intake` | Idea → plan |
-| `/repo-truth` | Git vs docs |
-| `/council` | Seven perspectives |
-| `/grill-then-council` | Grill, then council |
-| `/dispatch-research` | Narrow research brief |
-| `/orchestrate` | Paste-ready build prompt |
-| `/steward` | Sync run docs |
-| `/handoff-prompt` | Handoff + kickoff |
-| `/merge-manual` | Merge + QA list |
-| `/canvas-project` | Status canvas |
+| Say this | Skill |
+|----------|--------|
+| what does that mean | [`what`](skills/what/SKILL.md) |
+| keep going / yes | [`go`](skills/go/SKILL.md) |
+| commit this | [`ship`](skills/ship/SKILL.md) |
 
 Agent index: [`AGENTS.md`](AGENTS.md).
 
@@ -225,7 +211,7 @@ Optional. Review skills work better with them. Example config: [`foundation/curs
 | **chrome-devtools** | Drive the UI for `review-runtime` and `e2e-acceptance` |
 | **Playwright MCP** | Optional browser path, same jobs |
 
-These are not required to clone and calibrate. Add them when you want review to look at a running app instead of a diff.
+These are not required to install and calibrate. Add them when you want review to look at a running app instead of a diff.
 
 ---
 
@@ -240,6 +226,7 @@ These are not required to clone and calibrate. Add them when you want review to 
 | `council/` | Perspectives + runbook for the optional council pass |
 | `docs/` | Bootstrap and fundamentals |
 | [`AGENTS.md`](AGENTS.md) | Index for other agents working in this repo |
+| [`REPO-IDENTITY.md`](REPO-IDENTITY.md) | Public vs private clone — agents read before first-run edits |
 
 ---
 

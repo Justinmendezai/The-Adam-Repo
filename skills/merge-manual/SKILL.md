@@ -13,7 +13,7 @@ disable-model-invocation: true
 
 - User named branches or `/repo-truth` identified targets.
 - Slice verifiers green on branch (or user accepts merge-with-follow-up).
-- Respect `.cursor/adam.json` → `auto_merge_to_main`.
+- Respect `adam.json` → `auto_merge_to_main`.
 
 ## Procedure
 

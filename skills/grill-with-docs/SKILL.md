@@ -26,7 +26,7 @@ This gives you the existing vocabulary. Don't invent new terms when one already 
 
 ### 2. Grill, but log
 
-Run a `grill-me` session. After each resolved question:
+Run a `grill-me` session. Start with that skill's preamble if you have not already said it in this chat. After each resolved question:
 
 - If the answer introduces a new noun or verb you'll use repeatedly → add it to `CONTEXT.md`.
 - If the answer is a non-obvious tradeoff → start an ADR.

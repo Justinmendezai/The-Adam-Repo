@@ -31,7 +31,7 @@ Tier 3 — worker (composer-2-fast, best-of-n-runner)
   does:  write code, commit, emit <adam>COMPLETE</adam>
 ```
 
-Fallback path: when `topology_depth: 2` is set in `.cursor/adam.json`, the orchestrator dispatches workers directly via [`dispatch-builder`](../dispatch-builder/SKILL.md) / [`dispatch-parallel`](../dispatch-parallel/SKILL.md) and skips the manager hop.
+Fallback path: when `topology_depth: 2` is set in `adam.json`, the orchestrator dispatches workers directly via [`dispatch-builder`](../dispatch-builder/SKILL.md) / [`dispatch-parallel`](../dispatch-parallel/SKILL.md) and skips the manager hop.
 
 ## Preconditions
 
@@ -41,7 +41,7 @@ Before running this skill:
 - [`tests-first`](../tests-first/SKILL.md) has populated `slices/<id>/tests/` with red tests.
 - `agent-control/slice-status.md` exists (created by [`setup-adam`](../setup-adam/SKILL.md), one row per slice).
 - `agent-control/human-queue.md` exists (seeded by adam-foundation-sync) for batched operator items.
-- `.cursor/adam.json` has `topology_depth` (default `3`) and `verifier_convention` (default `slices/<id>/verify.sh`).
+- `adam.json` has `topology_depth` (default `3`) and `verifier_convention` (default `slices/<id>/verify.sh`).
 
 ## Start: fork-self (default for multi-slice builds)
 
@@ -80,7 +80,7 @@ Repeat until all rows are `done` or `escalate` (operator queue in `human-queue.m
 
 Read `agent-control/slice-status.md`. Identify the **wave**: every slice whose status is `ready` and whose `depends_on` rows are all `done`.
 
-Cap the wave at `max_parallel_builders` from `.cursor/adam.json` (default 4).
+Cap the wave at `max_parallel_builders` from `adam.json` (default 4).
 
 ### 2. Dispatch managers (paths, not contents)
 
@@ -99,7 +99,7 @@ Task(
     - slices/<id>/verify.sh
     - plan/CONTEXT.md
     - packet/PACKET.md
-    - .cursor/adam.json
+    - adam.json
     Paths out of scope for any worker you dispatch:
     - <every OTHER slice directory under slices/>
     - packet/, plan/, agent-control/, orchestration-runs/, slices/<id>/SPEC.md, slices/<id>/tests/

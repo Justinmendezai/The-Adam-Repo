@@ -1,0 +1,15 @@
+{
+  "subagent_runtime_default": "best-of-n-runner",
+  "subagent_model_default": "composer-2-fast",
+  "completion_signal": "<adam>COMPLETE</adam>",
+  "max_parallel_builders": 4,
+  "tests_first_strict": true,
+  "review_mcps": ["code-review-graph", "log-reader-mcp", "playwright"],
+  "browser_mcp": "playwright",
+  "topology_depth": 2,
+  "verifier_convention": "slices/<id>/verify.sh",
+  "auto_merge_to_main": false,
+  "operator_runs_commands": false,
+  "require_plan_approval": false,
+  "require_intake_grilling": true
+}

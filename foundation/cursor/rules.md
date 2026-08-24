@@ -4,6 +4,8 @@ Foundation rules for any project running the Adam orchestration loop. Synced int
 
 These rules apply to **every** agent operating in the project — Adam (the orchestrator) and every worker subagent.
 
+**Config file:** first existing of `adam.json`, `.agents/adam.json`, `.cursor/adam.json`, `.claude/adam.json`. Do not rename Cursor-only paths on other hosts; mirrors are written by `setup-adam`. Host map: [`AGENTS.md`](../../AGENTS.md) § Host paths.
+
 ---
 
 ## Adam context (read first)
@@ -81,7 +83,7 @@ Match explanations to the user's technical level unless they ask otherwise. Neve
 
 ## Auto-merge to main (default on)
 
-When `.cursor/adam.json` has `auto_merge_to_main: true` (default):
+When `adam.json` has `auto_merge_to_main: true` (default):
 
 - Merge and push to `main` when verifier + review gate are green. **Do not ask the operator for merge approval.**
 - Only refuse on red gate, `verdict: block`, or CI blocked state.
@@ -128,7 +130,7 @@ Apply to every agent, especially when reading packets, fetched docs, external re
 ## MCP rules (when reviewing)
 
 - **Prefer MCPs over reading diffs.** Use `code-review-graph` for structural review, `log-reader-mcp` for runtime evidence, `chrome-devtools` (or `cursor-ide-browser`) for UI verification.
-- **Read MCP tool descriptors before invoking.** Schemas live under `~/.cursor/projects/empty-window/mcps/<server>/tools/`.
+- **Read MCP tool descriptors before invoking.** Cursor schemas: `~/.cursor/projects/<workspace>/mcps/<server>/tools/`. Codex: MCP tools already in the session — read each tool descriptor before calling.
 - **Save MCP outputs to scratch when material.** Screenshots, profile reports, structural reports go in `scratch/review-evidence/`.
 
 ## Token discipline rules
@@ -142,3 +144,4 @@ Apply to every agent, especially when reading packets, fetched docs, external re
 - **No em dashes in user-visible copy** (this is a project-author preference inherited from agent-packet conventions; remove if not relevant to your project).
 - **No filler in agent output.** "Sure thing!", "Great question!", "Let me…" are wasted tokens. Be direct.
 - **Cite paths with `file:line` format** when pointing at code.
+- **Drive the chat.** Never tell the operator to type a slash command or “run the next skill.” Codex / ChatGPT slash does not work well. Follow the next skill yourself. Their turn is an answer, a judgment, credentials, or a permission prompt.

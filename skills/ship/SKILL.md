@@ -1,13 +1,13 @@
 ---
 name: ship
-description: Commit and push current workspace changes with safe git defaults. Use for ship, commit and push, push all, or great commit and push.
+description: Commit and push current workspace changes with safe git defaults. Use when they say ship, commit, commit and push, or save this. Follow this skill yourself — never tell them to type /ship.
 origin: adam
 disable-model-invocation: true
 ---
 
 # ship
 
-Commit + push with safe defaults.
+Commit + push with safe defaults. On Codex / ChatGPT, natural language (“commit this”) **is** the trigger.
 
 ## Before any git write
 
@@ -24,7 +24,7 @@ Commit + push with safe defaults.
 | Slice work | `adam/<slice-id>` per folder contract |
 | `main` | merge only when user explicitly approved |
 
-Respect `.cursor/adam.json` → `auto_merge_to_main`.
+Respect `adam.json` → `auto_merge_to_main`.
 
 ## Commit message
 

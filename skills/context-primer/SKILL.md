@@ -92,7 +92,7 @@ From slices/*/SPEC.md `## Result` blocks where status is BLOCKED.
 ## Conventions to honor
 
 - Strict TDD ownership: high-level agent writes tests, subagents only write impl.
-- Subagent runtime defaults from `.cursor/adam.json`
+- Subagent runtime defaults from `adam.json`
 - Naming/path conventions from plan/CONTEXT.md (one-line summary)
 
 ## Next concrete step

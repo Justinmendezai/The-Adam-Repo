@@ -5,7 +5,8 @@ Adam is **free, open source, Apache-2.0**. Maintainers improve it when we can; t
 ## Supported path
 
 - **Cursor** (current stable) on macOS, Linux, or Windows — documented bolt-on path
-- Skills installed per [`bootstrap.md`](bootstrap.md)
+- **Codex** and **Claude Code** — skill/rule discovery via `.agents/` / `.claude/` (see [`bootstrap.md`](bootstrap.md)); worker tools are that host's, not Composer 2
+- Skills installed as **folders** per [`bootstrap.md`](bootstrap.md) — never flatten `SKILL.md`
 - **`setup-adam`** + documented loop skills
 - Issues filed on the public GitHub repo with repro steps
 

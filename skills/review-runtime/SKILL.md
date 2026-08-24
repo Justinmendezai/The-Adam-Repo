@@ -21,7 +21,7 @@ Tests prove the contract. Runtime review proves the experience. The orchestrator
 
 ## Browser MCP
 
-Read `.cursor/adam.json` in the project repo.
+Read `adam.json` in the project repo.
 
 1. If `browser_mcp` is set (for example `"playwright"` or `"cursor-ide-browser"`), use that server's tools for `browser_navigate`, `browser_snapshot`, `browser_click`, etc.
 2. Otherwise, pick the first entry in `review_mcps` that names a browser driver: prefer `playwright` or any id containing `playwright` (some workspaces use `user-playwright`), else `cursor-ide-browser`.

@@ -1,8 +1,7 @@
 ---
 name: intake
-description: Process a raw idea or brainstorm doc into plan updates — critical review, gap analysis, packet or plan edits. Use for idea intake, process ideas, or critical review before building.
+description: Process a raw idea or brainstorm doc into plan updates — critical review, gap analysis, packet or plan edits. Use for idea intake, process ideas, or critical review before building. Follow from natural language; do not ask for /intake.
 origin: adam
-disable-model-invocation: true
 ---
 
 # intake

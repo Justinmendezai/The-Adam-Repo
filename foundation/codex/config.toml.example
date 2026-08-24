@@ -1,0 +1,14 @@
+# Codex MCP example. Merge into ~/.codex/config.toml (or $CODEX_HOME/config.toml).
+# Ask before editing the user's global Codex config.
+
+[mcp_servers.code-review-graph]
+command = "code-review-graph"
+args = ["serve"]
+
+[mcp_servers.log-reader-mcp]
+command = "npx"
+args = ["-y", "log-reader-mcp"]
+
+[mcp_servers.playwright]
+command = "npx"
+args = ["-y", "@playwright/mcp@latest"]

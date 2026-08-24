@@ -11,8 +11,8 @@ One slice, one Composer 2 subagent. The subagent works in isolation (worktree by
 
 This skill is **Tier 3** (the worker dispatch). It can be called two ways:
 
-- **From the Tier-2 manager** ([`dispatch-manager`](../dispatch-manager/SKILL.md)) when `.cursor/adam.json` has `topology_depth: 3`. The manager has already read the slice's `SPEC.md` and built the scoped prompt; this skill's template is what the manager fills in.
-- **Directly from the Tier-1 orchestrator** ([`orchestrate-build`](../orchestrate-build/SKILL.md)) when `topology_depth: 2`. Use 2-tier for small builds (≤5 slices, tiny SPECs) where the manager hop is pure overhead. Probe both depths on the first wave and lock the choice in `.cursor/adam.json` for the rest of the build.
+- **From the Tier-2 manager** ([`dispatch-manager`](../dispatch-manager/SKILL.md)) when `adam.json` has `topology_depth: 3`. The manager has already read the slice's `SPEC.md` and built the scoped prompt; this skill's template is what the manager fills in.
+- **Directly from the Tier-1 orchestrator** ([`orchestrate-build`](../orchestrate-build/SKILL.md)) when `topology_depth: 2`. Use 2-tier for small builds (≤5 slices, tiny SPECs) where the manager hop is pure overhead. Probe both depths on the first wave and lock the choice in `adam.json` for the rest of the build.
 
 Either way, the prompt template below is the contract for the worker.
 
@@ -29,7 +29,7 @@ For multiple independent slices, use [`dispatch-parallel`](../dispatch-parallel/
 - `slices/<id>/SPEC.md` (must exist)
 - `tests/<id>/` populated and red
 - `plan/CONTEXT.md`
-- `.cursor/adam.json`
+- `adam.json`
 
 ## Workflow
 

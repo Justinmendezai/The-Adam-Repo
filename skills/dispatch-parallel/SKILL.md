@@ -11,7 +11,7 @@ The aggressive default. Independent slices ship at the same time, each in its ow
 
 This skill is **Tier 3** parallel dispatch. As with [`dispatch-builder`](../dispatch-builder/SKILL.md), it's called two ways:
 
-- **From Tier-2 managers** (one per slice) when `topology_depth: 3` is set in `.cursor/adam.json`. Each manager dispatches its own worker in parallel; the Tier-1 [`orchestrate-build`](../orchestrate-build/SKILL.md) loop fans out N managers.
+- **From Tier-2 managers** (one per slice) when `topology_depth: 3` is set in `adam.json`. Each manager dispatches its own worker in parallel; the Tier-1 [`orchestrate-build`](../orchestrate-build/SKILL.md) loop fans out N managers.
 - **Directly from Tier-1** when `topology_depth: 2`. The orchestrator skips the manager hop and fans out workers itself.
 
 The prompt and the verifier-verbatim contract are the same as `dispatch-builder`; the difference is the wave dispatch and merge ordering covered below.
@@ -28,7 +28,7 @@ For a single slice or a sequential dependency, use [`dispatch-builder`](../dispa
 
 ### 1. Pick the wave
 
-Read `agent-control/slice-status.md` (the canonical registry; `slices/README.md` is the Mermaid for humans). Find every slice with status `ready` whose `depends_on` rows are all `done`. That's your wave. Cap at `max_parallel_builders` from `.cursor/adam.json` (default 4).
+Read `agent-control/slice-status.md` (the canonical registry; `slices/README.md` is the Mermaid for humans). Find every slice with status `ready` whose `depends_on` rows are all `done`. That's your wave. Cap at `max_parallel_builders` from `adam.json` (default 4).
 
 ### 2. Build prompts
 

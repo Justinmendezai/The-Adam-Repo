@@ -6,10 +6,10 @@
 
 | Layer | Choice |
 |-------|--------|
-| Framework | |
-| Language | |
-| Database | |
-| Hosting | |
+| Framework | undecided — Adam recommends |
+| Language | undecided — Adam recommends |
+| Database | undecided — Adam recommends |
+| Hosting | undecided — Adam recommends |
 
 ## Repo / paths
 

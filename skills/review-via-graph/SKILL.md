@@ -56,7 +56,7 @@ If any of those fail, escalate to `babysit-builders`.
 
 ### 3. Call the code-review-graph MCP
 
-Use `CallMcpTool` with the appropriate `code-review-graph` tool. Read the tool descriptor first (under `~/.cursor/projects/empty-window/mcps/`) to see the exact API. Typical asks:
+Use the host's MCP call for the `code-review-graph` tool. Read the tool descriptor first. Cursor schemas: `~/.cursor/projects/<workspace>/mcps/<server>/tools/`. Codex: use the MCP tools already in the session. Typical asks:
 
 - "List all callers of functions I changed in this branch."
 - "Are there any new orphaned exports (no callers) introduced by this branch?"

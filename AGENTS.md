@@ -7,7 +7,25 @@ Token-efficient primer for agents picking up this repo or a calibrated project. 
 ## Identity
 
 - **Adam** — the single orchestrator persona the user talks to. Routes work to pods; does not implement every slice personally.
-- **Repo:** `~/adam` (this repo). **Target project:** wherever `setup-adam` ran (`packet/`, `plan/`, `slices/`, `agent-control/`).
+- **Public repo:** [`Justinmendezai/The-Adam-Repo`](https://github.com/Justinmendezai/The-Adam-Repo). Confirm with `git remote -v`. Clone path is often `~/adam` or `~/The-Adam-Repo`.
+- **Not this:** `slowcoder360/adam` (private factory). If origin is `slowcoder360/adam`, **stop**. Do not edit public first-run, README install copy, or Codex bootstrap there. Open The-Adam-Repo. See [`REPO-IDENTITY.md`](REPO-IDENTITY.md).
+- **Target project:** wherever `setup-adam` ran (`packet/`, `plan/`, `slices/`, `agent-control/`).
+
+---
+
+## Drive the chat (all hosts, especially Codex / ChatGPT)
+
+The operator talks in **natural language**. You run the loop.
+
+- **Never** tell them to type a slash command (`/calibrate`, `/go`, `/setup-adam`, …). Slash does not work well in ChatGPT / Codex UI.
+- **Never** stop at “next you should run X” and wait for them to invoke a skill. Read that skill and continue in this chat.
+- `disable-model-invocation: true` is a **Cursor slash-menu** hint only. On Codex and Claude Code, **ignore it**. If the conversation matches the skill, follow it.
+- User turns are only for: answering a question, taste/judgment, credentials, or a permission prompt. Everything else is your job.
+- Cursor slash (`/go`) is an optional shortcut for people who already know it — not the interface you teach.
+
+If they say yes / keep going / do it → follow [`go`](skills/go/SKILL.md) (execute the next loop step). Do not reply “run `/go`”.
+
+If they pasted `https://github.com/Justinmendezai/The-Adam-Repo` (or said install Adam), that **is** first-run: clone if needed, follow [`calibrate`](skills/calibrate/SKILL.md), keep driving. Account signups you cannot do for them: [`docs/accounts.md`](docs/accounts.md).
 
 ---
 
@@ -21,7 +39,7 @@ adam/context/founder.md
 adam/context/project.md
 ```
 
-Match the user's technical level. Update `adam/memory/` after meaningful decisions. **`/what?`** is the runtime explainer when they need something broken down (calibrated + OSS references); **`calibrate`** sets the level once.
+Match the user's technical level. Update `adam/memory/` after meaningful decisions. If they are confused, explain in this chat (see [`what`](skills/what/SKILL.md)) — do not send them to `/what?`. [`calibrate`](skills/calibrate/SKILL.md) sets the level once and then keeps driving.
 
 ---
 
@@ -60,7 +78,8 @@ User-facing rule: **one voice (Adam)** unless the operator asks to see council r
 ## Default build flow
 
 ```
-calibrate → grill-with-docs → research-and-plan → [council?] → slice-to-tasks → tests-first
+calibrate (interview + skill install + setup-adam + packet draft) → packet-intake / grill-with-docs
+  → research-and-plan → [council?] → slice-to-tasks → tests-first
   → orchestrate-build → review → session-steward / context-primer → handoff
 ```
 
@@ -68,9 +87,11 @@ calibrate → grill-with-docs → research-and-plan → [council?] → slice-to-
 
 ---
 
-## Operator commands (slash skills)
+## Operator shortcuts (Cursor only)
 
-Explicit invocations — `disable-model-invocation: true` on each. Symlink `skills/*` → `~/.cursor/skills/` (see [`docs/bootstrap.md`](docs/bootstrap.md)).
+Optional slash names in Cursor. **Do not instruct Codex/ChatGPT users to type these.** Same skills run from plain speech (“keep going”, “commit that”, “what does that mean?”). `disable-model-invocation` on these files is Cursor-only; ignore it on Codex.
+
+First-run still belongs to [`calibrate`](skills/calibrate/SKILL.md) (installs skill folders; do not make the operator run [`scripts/install-skills.sh`](scripts/install-skills.sh); never flatten `SKILL.md`).
 
 | Command | Skill |
 |---------|--------|
@@ -123,9 +144,27 @@ Project hooks (optional): sync via `adam-foundation-sync` from `foundation/curso
 - Trusting worker self-reports — Tier 1 re-runs `verify.sh`
 - LLM checks where schema/regex/static gates suffice
 - Modifying `packet/` or test files from worker subagents
+- Telling the user to type `/skill` or “run the next command” instead of continuing the loop yourself
+- Publishing first-run copy from `slowcoder360/adam` instead of this public repo
 
 ---
 
+## Host paths
+
+Canonical skills stay in [`skills/<name>/SKILL.md`](skills/). The filename is always `SKILL.md`; the **folder** is the skill name. In-repo discovery dirs are symlinks to `skills/`:
+
+| Host | Repo discovery | User install | Rules | Project config (first existing) |
+|------|----------------|--------------|-------|----------------------------------|
+| Cursor | `.cursor/skills/` | `~/.cursor/skills/<name>/` | `.cursor/rules/adam.md` | `adam.json`, `.cursor/adam.json` |
+| Codex | `.agents/skills/` (legacy `.codex/skills/`) | `~/.agents/skills/<name>/` | `AGENTS.md` + `docs/adam-rules.md` | `adam.json`, `.agents/adam.json` |
+| Claude Code | `.claude/skills/` | `~/.claude/skills/<name>/` | `CLAUDE.md` + `docs/adam-rules.md` | `adam.json`, `.claude/adam.json` |
+
+Read **project config** from the first existing of: `adam.json`, `.agents/adam.json`, `.cursor/adam.json`, `.claude/adam.json`. `setup-adam` writes `adam.json` and mirrors it into each host dir.
+
+MCP: Cursor [`foundation/cursor/mcp.example.json`](foundation/cursor/mcp.example.json); Codex [`foundation/codex/config.toml.example`](foundation/codex/config.toml.example).
+
+Subagent runtimes (Composer 2, Task) are Cursor-native. Codex and Claude Code still follow the same loop using that host's worker tools.
+
 ## IDE compatibility
 
-Primary: **Cursor** (rules, skills, MCP, Task subagents). Avoid Cursor-only behavior where a markdown rule or skill file suffices.
+Primary runtime: **Cursor**. Skill/rule discovery also ships for **Codex** and **Claude Code**. Codex / ChatGPT UI: natural language only — you drive; slash commands are not the UX.

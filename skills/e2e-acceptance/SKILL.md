@@ -90,7 +90,7 @@ Open `packet/PACKET.md` (or, for issue-tracker-backed projects, the closed-issue
 
 #### 4a. Browser MCP + evidence (always for automatable SCs)
 
-Resolve the **browser MCP** the same way as [`review-runtime`](../review-runtime/SKILL.md) (**Browser MCP** section): read `.cursor/adam.json`, honor `browser_mcp` if set, else prefer `playwright` / ids containing `playwright`, else `cursor-ide-browser`.
+Resolve the **browser MCP** the same way as [`review-runtime`](../review-runtime/SKILL.md) (**Browser MCP** section): read `adam.json`, honor `browser_mcp` if set, else prefer `playwright` / ids containing `playwright`, else `cursor-ide-browser`.
 
 For each success criterion:
 

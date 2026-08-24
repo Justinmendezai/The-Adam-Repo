@@ -9,7 +9,7 @@ The orchestrator's first move on every project. Validate the packet, **grill the
 
 This is the **one required upfront session** with the operator. It front-loads judgment so the team can build without you for the rest of the run. **Do not grill mid-build** — no ambiguities during slice dispatch; those should have been resolved here.
 
-Skip grilling only when `packet.orchestration.require_intake_grilling: false` or `.cursor/adam.json` has `"require_intake_grilling": false` (emergency/hotfix paths only).
+Skip grilling only when `packet.orchestration.require_intake_grilling: false` or `adam.json` has `"require_intake_grilling": false` (emergency/hotfix paths only).
 
 ## Inputs
 
@@ -36,7 +36,7 @@ Skip grilling only when `packet.orchestration.require_intake_grilling: false` or
 
    For each ambiguity, draft a question. Do not invent answers — that's what grilling resolves.
 
-5. **Required grilling pass.** Run [`grill-with-docs`](../grill-with-docs/SKILL.md) on the union of:
+5. **Required grilling pass.** Before the first question, give the [`grill-me`](../grill-me/SKILL.md) preamble (why this interview exists). Then run [`grill-with-docs`](../grill-with-docs/SKILL.md) on the union of:
    - The packet's `open_questions`
    - Your discovered ambiguities
 
@@ -51,7 +51,7 @@ Skip grilling only when `packet.orchestration.require_intake_grilling: false` or
    - Ambiguities and answers (**verbatim**, with timestamps — from grilling)
    - Items deferred to `research-and-plan` (should be empty or explicitly accepted risks only)
 
-7. **Hand off.** Proceed to `research-and-plan`. No second go/no-go on the plan unless `require_plan_approval` is set — grilling already happened.
+7. **Continue.** Follow [`research-and-plan`](../research-and-plan/SKILL.md) in this chat. Do not tell the user to type a command or skill name. No second go/no-go on the plan unless `require_plan_approval` is set — grilling already happened.
 
 ## Anti-patterns
 
@@ -60,6 +60,7 @@ Skip grilling only when `packet.orchestration.require_intake_grilling: false` or
 - Grilling during slice dispatch or babysit (mid-run). Intake only.
 - Answering ambiguities for the operator instead of asking.
 - Starting to plan before intake + grilling is complete.
+- Telling the operator to “run `research-and-plan`” or type a slash command.
 - **Editing anything under `packet/`. Hard rule.** Capture answers in `scratch/intake-notes.md`. See [`foundation/cursor/rules.md`](../../foundation/cursor/rules.md) "Packet rules".
 
 ## Run output
@@ -68,4 +69,4 @@ Write `scratch/run-results/intake.json` matching [`run-result.schema.json`](../.
 
 ## Output
 
-`scratch/intake-notes.md` exists, schema validation passes, ambiguities resolved via grilling (or explicitly deferred with operator acceptance), repo state confirmed. Ready for `research-and-plan`.
+`scratch/intake-notes.md` exists, schema validation passes, ambiguities resolved via grilling (or explicitly deferred with operator acceptance), repo state confirmed. **You** continue into `research-and-plan` in this chat.

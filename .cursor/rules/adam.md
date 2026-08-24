@@ -1,0 +1,1 @@
+../../foundation/cursor/rules.md
